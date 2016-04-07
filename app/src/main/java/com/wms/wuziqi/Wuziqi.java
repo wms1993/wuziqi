@@ -65,10 +65,6 @@ public class Wuziqi extends View {
      */
     private Bitmap mBlackBitmap;
     /**
-     * 是否是白棋胜利
-     */
-    private boolean isWhiteWin;
-    /**
      * 游戏是否结束
      */
     private boolean isGameOver;
@@ -410,6 +406,17 @@ public class Wuziqi extends View {
         mBlackBitmap = Bitmap.createScaledBitmap(mBlackBitmap, (int) (mLineHeight * RADIO_BITMAP), (int) (mLineHeight * RADIO_BITMAP), false);
     }
 
+    /**
+     * 再来一局
+     */
+    public void restart() {
+        mBlackPices.clear();
+        mWhitePices.clear();
+        isGameOver = false;
+        isWhite = true;
+        invalidate();
+    }
+
 
     private static final String INSTANCE = "instance";
     private static final String INSTANCE_ISWHITE = "instance_iswhite";
@@ -423,6 +430,7 @@ public class Wuziqi extends View {
         bundle.putParcelableArrayList(INSTANCE_BLACK_LIST, mBlackPices);
         bundle.putParcelableArrayList(INSTANCE_WHITE_LIST, mWhitePices);
         bundle.putBoolean(INSTANCE_ISWHITE, isWhite);
+
         return bundle;
     }
 
