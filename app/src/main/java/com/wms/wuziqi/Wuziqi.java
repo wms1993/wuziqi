@@ -11,7 +11,6 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,6 +28,14 @@ public class Wuziqi extends View {
      */
     private static final int WIN_NUM = 5;
     /**
+     * 棋盘线的个数
+     */
+    private static final int LINE_NUM = 10;
+    private static final String INSTANCE = "instance";
+    private static final String INSTANCE_ISWHITE = "instance_iswhite";
+    private static final String INSTANCE_BLACK_LIST = "instance_black_list";
+    private static final String INSTANCE_WHITE_LIST = "instance_white_list";
+    /**
      * 棋盘的宽度
      */
     private int mPanelWidth;
@@ -36,10 +43,6 @@ public class Wuziqi extends View {
      * 棋子的高度
      */
     private float mLineHeight;
-    /**
-     * 棋盘线的个数
-     */
-    private static final int LINE_NUM = 10;
     /**
      * 绘制棋盘的画笔
      */
@@ -68,6 +71,7 @@ public class Wuziqi extends View {
      * 游戏是否结束
      */
     private boolean isGameOver;
+    private OnGameOverListener listener;
 
     public Wuziqi(Context context) {
         this(context, null);
@@ -129,13 +133,9 @@ public class Wuziqi extends View {
         if (whiteWin || blackWin) {
             isGameOver = true;
 
-            String text;
-            if (whiteWin) {
-                text = "白棋胜";
-            } else {
-                text = "黑棋胜";
+            if (listener != null) {
+                listener.gameOver(whiteWin);
             }
-            Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -417,11 +417,9 @@ public class Wuziqi extends View {
         invalidate();
     }
 
-
-    private static final String INSTANCE = "instance";
-    private static final String INSTANCE_ISWHITE = "instance_iswhite";
-    private static final String INSTANCE_BLACK_LIST = "instance_black_list";
-    private static final String INSTANCE_WHITE_LIST = "instance_white_list";
+    public void setOnGameOverListener(OnGameOverListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected Parcelable onSaveInstanceState() {
@@ -445,5 +443,12 @@ public class Wuziqi extends View {
             return;
         }
         super.onRestoreInstanceState(state);
+    }
+
+    /**
+     * 游戏结束监听
+     */
+    public interface OnGameOverListener {
+        void gameOver(boolean isWhite);
     }
 }
