@@ -14,7 +14,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="再来一局"
-        android:onClick="restart"/>
+        android:onClick="restart"
+        android:text="再来一局"/>
 
 </RelativeLayout>
